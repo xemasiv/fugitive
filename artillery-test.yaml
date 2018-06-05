@@ -1,0 +1,17 @@
+config:
+  target: "ws://127.0.0.1"
+  phases:
+    - duration: 600
+      arrivalRate: 1
+      rampTo: 1
+      name: "Warm up the application"
+  ws:
+    # Ignore SSL certificate errors
+    # - useful in *development* with self-signed certs
+    rejectUnauthorized: false
+scenarios:
+  - engine: "ws"
+    flow:
+      - send: "hello"
+      - think: 1
+      - send: "world"

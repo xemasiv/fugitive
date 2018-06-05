@@ -1,0 +1,14 @@
+{
+  "name": "expedite",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:xemasiv/expedite.git",
+  "author": "xemasiv <xemasiv@gmail.com>",
+  "license": "CC-BY-4.0",
+  "dependencies": {
+    "uws": "^10.148.0"
+  },
+  "scripts": {
+    "start": "node --nouse-idle-notification --expose-gc index.js"
+  }
+}
