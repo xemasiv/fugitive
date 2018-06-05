@@ -31,7 +31,8 @@ Cluster `master` can communicate with `workers`:
 ## References
 
 * https://nodejs.org/api/cluster.html
-
+* https://developer.mozilla.org/en-US/docs/Web/API/WebSocket
+* https://blog.jayway.com/2015/04/13/600k-concurrent-websocket-connections-on-aws-using-node-js/
 
 ## Testing
 
