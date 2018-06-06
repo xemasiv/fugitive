@@ -35,7 +35,20 @@ Writing the client:
 * Client should automatically reconnect upon disconnect, or connection attempt failure.
 * Client should have Exponential Back-off implementation on reconnection attempts.
 
-Check out `client.js` for a wrapper that implements both criteria.
+Check out `client.js` for a wrapper that implements both criteria. You can test it in your browser.
+
+Client must also support serialization of data:
+
+* A great reference is Uber's https://eng.uber.com/trip-data-squeeze/ which shows us a decent comparison between serialization formats.
+
+`serialization.js` provides a decent example using the following libraries:
+
+* https://www.npmjs.com/package/msgpack5
+* https://www.npmjs.com/package/pako
+
+```
+node serialization.js
+```
 
 ## Containerization
 

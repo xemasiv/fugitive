@@ -6,6 +6,8 @@
   "author": "xemasiv <xemasiv@gmail.com>",
   "license": "CC-BY-4.0",
   "dependencies": {
+    "msgpack5": "^4.2.0",
+    "pako": "^1.0.6",
     "uws": "^10.148.0"
   },
   "scripts": {
