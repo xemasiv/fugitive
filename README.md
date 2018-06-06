@@ -1,7 +1,7 @@
 # expedite
 websocket boilerplate with scale in mind, `uws` + `cluster`
 
-## Notes
+## Server-Side Notes
 
 Factors that may affect performance are:
 
@@ -27,6 +27,15 @@ Cluster `master` can communicate with `workers`:
 * `worker` can receive it as `process.on('message', () => {})`.
 * `worker` can send message to `master` through `process.send(msg)`
 * `master` can receive messages from workers through `cluster.on('message', (worker, message, handle) => { })`
+
+## Client-Side Notes
+
+Writing the client:
+
+* Client should automatically reconnect upon disconnect, or connection attempt failure.
+* Client should have Exponential Back-off implementation on reconnection attempts.
+
+Check out `client.js` for a wrapper that implements both criteria.
 
 ## References
 
