@@ -50,6 +50,11 @@ Client must also support serialization of data:
 node serialization.js
 ```
 
+Google's `Protocol Buffers` is also a better alternative:
+
+* https://developers.google.com/protocol-buffers/docs/proto3
+* https://www.npmjs.com/package/pbf
+
 ## Containerization
 
 Heroku's 12-Factor: https://12factor.net
