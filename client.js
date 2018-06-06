@@ -31,4 +31,8 @@ var EClient = class ExpediteClient {
 }
 
 // Usage:
-new EClient({ url: 'ws://127.0.0.1' });
+var instance = new EClient({
+  url: 'ws://127.0.0.1',
+  message: (e) => console.log(e.data),
+  debug: console.warn
+});

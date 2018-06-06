@@ -16,7 +16,13 @@ if (cluster.isMaster) {
   }, 30000);
   console.log(`Master ${process.pid} is running`);
   for (let index = 1; index <= numCPUs; index++) {
-    cluster.fork();
+    let worker = cluster.fork();
+    /*
+    // Simulates a disconnect.
+    if (index === 4) {
+      setTimeout(() => worker.kill(), 5000);
+    }
+    */
   }
   cluster.on('online', (worker) => {
     console.log(`worker ${worker.process.pid} connected.`);
