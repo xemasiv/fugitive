@@ -37,6 +37,20 @@ Writing the client:
 
 Check out `client.js` for a wrapper that implements both criteria.
 
+## Containerization
+
+Heroku's 12-Factor: https://12factor.net
+
+Ideal docker image environment:
+
+* node:latest (comes with yarn)
+* gcc & g++ (for node-gyp)
+
+Reference `Dockerfile`:
+
+* https://hub.docker.com/r/xemasiv/node-env/
+* https://github.com/xemasiv/node-env/blob/master/Dockerfile
+
 ## References
 
 * https://nodejs.org/api/cluster.html
