@@ -1,7 +1,23 @@
 # fugitive
 websockets & webrtc experiments
 
+## Structure
 
+* Exposed components
+  * Server
+  * Client
+* Used libraries
+  * Server-only
+    * `uws`
+  * Client-only
+    * `simple-peer`
+  * Server & Client
+    * `pako`
+    * `msgpack5`
+
+---
+
+# Old Notes:
 
 ## Server-Side Notes
 

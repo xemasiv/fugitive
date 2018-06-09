@@ -1,6 +1,6 @@
 {
   "name": "fugitive",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "index.js",
   "repository": "git@github.com:xemasiv/fugitive.git",
   "author": "xemasiv <xemasiv@gmail.com>",
@@ -8,6 +8,7 @@
   "dependencies": {
     "msgpack5": "^4.2.0",
     "pako": "^1.0.6",
+    "simple-peer": "^9.1.2",
     "uws": "^10.148.0"
   },
   "scripts": {
