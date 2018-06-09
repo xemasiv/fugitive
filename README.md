@@ -1,5 +1,7 @@
-# expedite
-websocket boilerplate with scale in mind, `uws` + `cluster`
+# fugitive
+websockets & webrtc experiments
+
+
 
 ## Server-Side Notes
 
