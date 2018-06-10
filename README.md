@@ -15,6 +15,21 @@ websockets & webrtc experiments
     * `pako`
     * `msgpack5`
 
+* https://keybase.io/kbpgp
+* https://medium.freecodecamp.org/how-does-pretty-good-privacy-work-3f5f75ecea97
+
+![asd](/Diagrams1.png)
+
+## Plugins
+
+They can:
+
+* Register a middleware.
+* Manage existing connections.
+* Create new connections.
+
+
+
 ---
 
 # Old Notes:

@@ -6,12 +6,22 @@
   "author": "xemasiv <xemasiv@gmail.com>",
   "license": "CC-BY-4.0",
   "dependencies": {
+    "mitt": "^1.1.3",
     "msgpack5": "^4.2.0",
     "pako": "^1.0.6",
+    "preact": "*",
+    "react": "*",
     "simple-peer": "^9.1.2",
-    "uws": "^10.148.0"
+    "unistore": "^3.0.6",
+    "uuid-random": "^1.0.6",
+    "uws": "^10.148.0",
+    "workerize": "^0.1.7"
   },
   "scripts": {
-    "start": "node --nouse-idle-notification --expose-gc index.js"
+    "start": "node --nouse-idle-notification --expose-gc index.js",
+    "dev": "parcel src/index.html -p 80"
+  },
+  "devDependencies": {
+    "serialize-javascript": "^1.5.0"
   }
 }
