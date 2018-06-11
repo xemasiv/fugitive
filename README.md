@@ -17,18 +17,26 @@ websockets & webrtc experiments
   * Serialization
   * Compression
 * Optimize processing
-  * Use of Web Workers using `centaurus`
-* Plugins
-* Middlewares
-* Components
+  * Use of Web Workers
+
+## Progress
+
+* Libraries Used
   * `uws` ![](/chk.png "ok")
   * `simple-peer` ![](/chk.png "ok")
   * `msgpack5` ![](/chk.png "ok")
   * `pako` ![](/chk.png "ok")
   * `centaurus` ![](/chk.png "ok")
-  * asd
+  * `approximate-distance` ![](/chk.png "ok")
 * Plugins
-  * Exponential back-off ![](/chk.png "ok")
+  * Exponential Back-off
+    * For WebSocket Clients
+  * Assisted Peer Exchange
+    * For WebSocket Server & WebRTC Clients
+  * Adaptive Peer Exchange
+    * For WebRTC Clients
+    * Uses
+
 ---
 
 ## Structure

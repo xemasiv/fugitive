@@ -10496,7 +10496,35 @@ setTimeout(function () {
   C.test().then(console.log).catch(console.error);
   C.checkPako('is pako found?', 'yes!').then(console.log).catch(console.error);
 }, 2000);
-},{"mitt":4,"simple-peer":5,"unistore":6,"./centaurus.js":3}],62:[function(require,module,exports) {
+
+// @approximate-distance
+// https://github.com/mapbox/cheap-ruler
+var factors = {
+  kilometers: 1,
+  miles: 1000 / 1609.344,
+  nauticalmiles: 1000 / 1852,
+  meters: 1000,
+  metres: 1000,
+  yards: 1000 / 0.9144,
+  feet: 1000 / 0.3048,
+  inches: 1000 / 0.0254
+};
+var ApproximateDistance = function ApproximateDistance(a, b, units) {
+  var lat = a[0];
+  var m = units ? factors[units] : 1;
+  var cos = Math.cos(lat * Math.PI / 180);
+  var cos2 = 2 * cos * cos - 1;
+  var cos3 = 2 * cos * cos2 - cos;
+  var cos4 = 2 * cos * cos3 - cos2;
+  var cos5 = 2 * cos * cos4 - cos3;
+  var kx = m * (111.41513 * cos - 0.09455 * cos3 + 0.00012 * cos5);
+  var ky = m * (111.13209 - 0.56605 * cos2 + 0.0012 * cos4);
+  var dx = (a[0] - b[0]) * kx;
+  var dy = (a[1] - b[1]) * ky;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+ApproximateDistance([14.5818, 120.9770], [14.5943, 120.9706], 'meters');
+},{"mitt":4,"simple-peer":5,"unistore":6,"./centaurus.js":3}],65:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -10666,5 +10694,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[62,2], null)
+},{}]},{},[65,2], null)
 //# sourceMappingURL=/client.d8ece27e.map
