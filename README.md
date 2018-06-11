@@ -28,6 +28,9 @@ websockets & webrtc experiments
   * `pako` ![](/chk.png "ok")
   * `centaurus` ![](/chk.png "ok")
   * `approximate-distance` ![](/chk.png "ok")
+  * `maxmind`
+  * `all-the-cities`
+  * `kbpgp`
 * Plugins
   * Exponential Back-off
     * For WebSocket Clients

@@ -9,6 +9,26 @@ import mitt from 'mitt';
 import Peer from 'simple-peer';
 import createStore from 'unistore';
 import Centaurus from './centaurus.js';
+import { sha256, sha224 } from 'js-sha256';
+import md5 from 'js-md5';
+const str = '123';
+console.log(md5(str));
+console.log(sha256(str));
+
+const benchmark = (label, fn) => {
+  var now = Date.now();
+  var y = 0;
+  while (Date.now() - now < 1000) {
+    fn();
+  	y++;
+  }
+  console.log(label, ':', String(y), '/s');
+}
+/*
+benchmark('md5', () => md5(str));
+benchmark('sha256', () => sha256(str));
+benchmark('sha224', () => sha224(str));
+*/
 
 var Client = class FugitiveClient {
   constructor () {
