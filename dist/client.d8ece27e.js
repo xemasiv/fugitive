@@ -10458,6 +10458,9 @@ var Client = function () {
     value: function registerMiddleware(middleware) {
       this.middlewares.push(middleware);
     }
+  }, {
+    key: 'bindPlugin',
+    value: function bindPlugin() {}
   }]);
 
   return FugitiveClient;
@@ -10471,7 +10474,9 @@ var Middleware = function FugitiveMiddleware(parameters) {
   this.onSend = onSend;
   this.onReceive = onReceive;
 };
-
+var Plugin = function FugitivePlugin() {
+  _classCallCheck(this, FugitivePlugin);
+};
 var C = new _centaurus2.default('/centaurus.worker.js');
 C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
 C.registerFunctions({
@@ -10491,7 +10496,7 @@ setTimeout(function () {
   C.test().then(console.log).catch(console.error);
   C.checkPako('is pako found?', 'yes!').then(console.log).catch(console.error);
 }, 2000);
-},{"mitt":4,"simple-peer":5,"unistore":6,"./centaurus.js":3}],61:[function(require,module,exports) {
+},{"mitt":4,"simple-peer":5,"unistore":6,"./centaurus.js":3}],62:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -10661,5 +10666,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[61,2], null)
+},{}]},{},[62,2], null)
 //# sourceMappingURL=/client.d8ece27e.map

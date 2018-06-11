@@ -1,6 +1,36 @@
 # fugitive
 websockets & webrtc experiments
 
+## Goals
+
+* Offload loading of assets to peers
+  * Images
+  * Video / Audio
+  * Binary Files
+* Offload static requests to peers
+  * Search Queries
+* Optimize p2p connections
+  * WebSocket Server
+  * WebRTC Client
+  * Reconnection w/ exponential back-off
+* Optimize p2p transfers
+  * Serialization
+  * Compression
+* Optimize processing
+  * Use of Web Workers using `centaurus`
+* Plugins
+* Middlewares
+* Components
+  * `uws` ![](/chk.png "ok")
+  * `simple-peer` ![](/chk.png "ok")
+  * `msgpack5` ![](/chk.png "ok")
+  * `pako` ![](/chk.png "ok")
+  * `centaurus` ![](/chk.png "ok")
+  * asd
+* Plugins
+  * Exponential back-off ![](/chk.png "ok")
+---
+
 ## Structure
 
 * Exposed components

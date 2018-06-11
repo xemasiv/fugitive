@@ -29,6 +29,9 @@ var Client = class FugitiveClient {
   registerMiddleware (middleware) {
     this.middlewares.push(middleware);
   }
+  bindPlugin () {
+    
+  }
 }
 var Middleware = class FugitiveMiddleware {
   constructor (parameters) {
@@ -37,7 +40,11 @@ var Middleware = class FugitiveMiddleware {
     this.onReceive = onReceive;
   }
 }
+var Plugin = class FugitivePlugin {
+  constructor () {
 
+  }
+}
 let C = new Centaurus('/centaurus.worker.js');
 C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
 C.registerFunctions({
