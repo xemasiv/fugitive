@@ -28,7 +28,41 @@ They can:
 * Manage existing connections.
 * Create new connections.
 
+---
 
+## Centaurus
+
+* Simplified script loading.
+* Simplified function registration.
+* Built-in serialization / de-serialization with `serialize-javascript`.
+* Supported parameters:
+  * https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm
+* Usage:
+
+```js
+let C = new Centaurus('/centaurus.worker.js');
+C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
+C.registerFunctions({
+  test: (resolve, reject) => {
+    console.log('function test executed');
+    resolve(123456);
+  },
+  checkPako: (resolve, reject, param1, param2) => {
+    console.log(pako);
+    var result = ''.concat(param1, ' ', param2);
+    resolve(result);
+  }
+});
+window.C = C;
+setTimeout(() => {
+  C.test()
+    .then(console.log)
+    .catch(console.error);
+  C.checkPako('is pako found?', 'yes!')
+    .then(console.log)
+    .catch(console.error);
+}, 2000);
+```
 
 ---
 

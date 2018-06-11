@@ -12,21 +12,28 @@ const uuid = (a) => {return a?(a^Math.random()*16>>a/4).toString(16):([1e7]+-1e3
 class Centaurus {
   constructor (workerPath) {
     const ResolveMap = new Map();
+    const RejectMap = new Map();
     const worker = new Worker(workerPath);
     worker.onmessage = ({ data }) => {
       data = eval('(' + data + ')');
       if (data.id) {
-        ResolveMap.get(data.id)(data.parameter);
+        if (data.resolved === true) {
+          ResolveMap.get(data.id)(data.parameter);
+        } else {
+          RejectMap.get(data.id)(data.parameter);
+        }
         ResolveMap.delete(data.id);
+        RejectMap.delete(data.id);
       }
     };
     this.worker = worker;
-    this.send = (something, resolve) => {
+    this.send = (something, resolve, reject) => {
       if (typeof something !== 'object') throw new Error('asd');
       if (resolve) {
         const id = uuid();
         something.id = id;
         ResolveMap.set(id, resolve);
+        RejectMap.set(id, reject);
       }
       this.worker.postMessage(serialize(something));
     };
@@ -50,7 +57,7 @@ class Centaurus {
             action: ActionTypes.CALL_FUNCTION,
             key: key,
             parameters
-          }, resolve);
+          }, resolve, reject);
         });
       };
     });

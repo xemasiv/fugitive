@@ -98,7 +98,7 @@ parcelRequire = (function (modules, cache, entry, globalName) {
 
   // Override the current require with this new one
   return newRequire;
-})({9:[function(require,module,exports) {
+})({2:[function(require,module,exports) {
 /*
 Copyright (c) 2014, Yahoo! Inc. All rights reserved.
 Copyrights licensed under the New BSD License.
@@ -228,6 +228,8 @@ var _serializeJavascript2 = _interopRequireDefault(_serializeJavascript);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var ActionTypes = {
   LOAD_SCRIPTS: 0,
   REGISTER_FUNCTIONS: 1,
@@ -252,17 +254,24 @@ self.addEventListener('message', function (_ref) {
       var resolve = function resolve(parameter) {
         return postMessage((0, _serializeJavascript2.default)({
           id: data.id,
+          resolved: true,
           parameter: parameter
         }));
       };
-      LocalFunctions[data.key].apply(self, [resolve, data.parameters]);
+      var reject = function reject(parameter) {
+        return postMessage((0, _serializeJavascript2.default)({
+          id: data.id,
+          parameter: parameter
+        }));
+      };
+      LocalFunctions[data.key].apply(self, [resolve, reject].concat(_toConsumableArray(data.parameters)));
       break;
     default:
       console.warn('unhandled message', data);
       break;
   }
 });
-},{"serialize-javascript":9}],8:[function(require,module,exports) {
+},{"serialize-javascript":2}],3:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -291,7 +300,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '54274' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63241' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -432,5 +441,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[8,1], null)
+},{}]},{},[3,1], null)
 //# sourceMappingURL=/centaurus.worker.map

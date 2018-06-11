@@ -19,9 +19,14 @@ self.addEventListener('message', ({ data }) => {
     case ActionTypes.CALL_FUNCTION:
       let resolve = (parameter) => postMessage(serialize({
         id: data.id,
+        resolved: true,
         parameter
       }));
-      LocalFunctions[data.key].apply(self, [ resolve, data.parameters ]);
+      let reject = (parameter) => postMessage(serialize({
+        id: data.id,
+        parameter
+      }));
+      LocalFunctions[data.key].apply(self, [ resolve, reject, ...data.parameters ]);
       break;
     default:
       console.warn('unhandled message', data);

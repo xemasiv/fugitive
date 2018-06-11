@@ -41,13 +41,14 @@ var Middleware = class FugitiveMiddleware {
 let C = new Centaurus('/centaurus.worker.js');
 C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
 C.registerFunctions({
-  test: (resolve) => {
+  test: (resolve, reject) => {
     console.log('function test executed');
     resolve(123456);
   },
-  checkPako: (resolve) => {
+  checkPako: (resolve, reject, param1, param2) => {
     console.log(pako);
-    resolve();
+    var result = ''.concat(param1, ' ', param2);
+    resolve(result);
   }
 });
 window.C = C;
@@ -56,7 +57,7 @@ setTimeout(() => {
   C.test()
     .then(console.log)
     .catch(console.error);
-  C.checkPako()
+  C.checkPako('is pako found?', 'yes!')
     .then(console.log)
     .catch(console.error);
 
