@@ -232,46 +232,68 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var ActionTypes = {
   LOAD_SCRIPTS: 0,
-  REGISTER_FUNCTIONS: 1,
+  REGISTER_FUNCTION: 1,
   CALL_FUNCTION: 2
 };
+
 var LocalFunctions = {};
+
+var send = function send(something) {
+  return postMessage((0, _serializeJavascript2.default)(something));
+};
 
 self.addEventListener('message', function (_ref) {
   var data = _ref.data;
 
   data = eval('(' + data + ')');
+  var resolve = function resolve(parameter) {
+    return send({
+      id: data.id,
+      resolved: true,
+      parameter: parameter
+    });
+  };
+  var reject = function reject(parameter) {
+    return send({
+      id: data.id,
+      parameter: parameter
+    });
+  };
   switch (data.action) {
     case ActionTypes.LOAD_SCRIPTS:
-      data.scripts.map(function (script) {
-        return importScripts(script);
-      });
+      try {
+        data.scripts.map(function (script) {
+          return importScripts(script);
+        });
+        resolve();
+      } catch (e) {
+        console.warn('@ LOAD_SCRIPTS', e);
+        reject(e.stack);
+      }
       break;
-    case ActionTypes.REGISTER_FUNCTIONS:
-      LocalFunctions[data.key] = data.fn;
+    case ActionTypes.REGISTER_FUNCTION:
+      try {
+        LocalFunctions[data.key] = data.fn;
+        resolve();
+      } catch (e) {
+        console.warn('@ REGISTER_FUNCTION', e);
+        reject(e.stack);
+      }
       break;
     case ActionTypes.CALL_FUNCTION:
-      var resolve = function resolve(parameter) {
-        return postMessage((0, _serializeJavascript2.default)({
-          id: data.id,
-          resolved: true,
-          parameter: parameter
-        }));
-      };
-      var reject = function reject(parameter) {
-        return postMessage((0, _serializeJavascript2.default)({
-          id: data.id,
-          parameter: parameter
-        }));
-      };
-      LocalFunctions[data.key].apply(self, [resolve, reject].concat(_toConsumableArray(data.parameters)));
+      try {
+        LocalFunctions[data.key].apply(self, [resolve, reject].concat(_toConsumableArray(data.parameters)));
+      } catch (e) {
+        console.warn('@ CALL_FUNCTION', e);
+        reject(e.stack);
+      }
       break;
     default:
       console.warn('unhandled message', data);
       break;
   }
 });
-},{"serialize-javascript":2}],3:[function(require,module,exports) {
+},{"serialize-javascript":2}],10:[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -300,7 +322,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63241' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '54746' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -441,5 +463,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},[3,1], null)
+},{}]},{},[10,1], null)
 //# sourceMappingURL=/centaurus.worker.map

@@ -9,8 +9,50 @@ import mitt from 'mitt';
 import Peer from 'simple-peer';
 import createStore from 'unistore';
 import Centaurus from './centaurus.js';
+
 import { sha256, sha224 } from 'js-sha256';
 import md5 from 'js-md5';
+
+
+import PouchDB from 'pouchdb-browser';
+PouchDB.debug.disable();
+
+var Database = class FugitiveDatabase {
+  constructor () {
+    this.db = new PouchDB({
+      name: 'fugitive',
+      adapter: 'idb',
+      storage: 'persistent'
+    });
+  }
+  write (doc) {
+    return this.db.get(doc._id)
+      .then((existing) => {
+        doc._rev = existing._rev;
+        return this.db.put(doc);
+      })
+      .catch((err) => {
+        return err.status === 409 ? this.write(doc) : this.db.put(doc);
+      });
+  }
+  read (id) {
+    return this.db.get(id);
+  }
+};
+
+var doc = {
+  _id: 'test',
+  name: 'xemasiv'
+};
+
+const db = new Database();
+
+Promise.resolve()
+  .then(() => db.write(doc))
+  .then(() => db.read('test'))
+  .then((result) => console.log('fetched:', result))
+  .catch(console.error);
+
 const str = '123';
 console.log(md5(str));
 console.log(sha256(str));
@@ -66,27 +108,34 @@ var Plugin = class FugitivePlugin {
   }
 }
 let C = new Centaurus('/centaurus.worker.js');
-C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
-C.registerFunctions({
-  test: (resolve, reject) => {
-    console.log('function test executed');
-    resolve(123456);
-  },
-  checkPako: (resolve, reject, param1, param2) => {
-    console.log(pako);
-    var result = ''.concat(param1, ' ', param2);
-    resolve(result);
-  }
-});
+Promise.resolve()
+  .then(() => {
+    return C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
+  })
+  .then(() => {
+    return C.registerFunctions({
+      test: (resolve, reject) => {
+        console.log('function test executed');
+        resolve(123456);
+      },
+      checkPako: (resolve, reject, param1, param2) => {
+        console.log(pako);
+        var result = ''.concat(param1, ' ', param2);
+        resolve(result);
+      }
+    });
+  })
+  .then(() => {
+    return C.test().then(console.log);
+  })
+  .then(() => {
+    return C.checkPako('is pako found?', 'yes!').then(console.log);
+  })
+  .catch(console.error);
 window.C = C;
 setTimeout(() => {
 
-  C.test()
-    .then(console.log)
-    .catch(console.error);
-  C.checkPako('is pako found?', 'yes!')
-    .then(console.log)
-    .catch(console.error);
+
 
 }, 2000);
 
@@ -117,4 +166,4 @@ var ApproximateDistance = (a, b, units) => {
   const dy = (a[1] - b[1]) * ky;
   return Math.sqrt(dx * dx + dy * dy);
 };
-ApproximateDistance([14.5818, 120.9770], [14.5943, 120.9706], 'meters');
+console.log(ApproximateDistance([14.5818, 120.9770], [14.5943, 120.9706], 'meters'));

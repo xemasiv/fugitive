@@ -39,6 +39,7 @@ websockets & webrtc experiments
   * Adaptive Peer Exchange
     * For WebRTC Clients
     * Uses
+  * Local Storage
 
 ---
 
