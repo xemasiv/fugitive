@@ -8,7 +8,6 @@ Requires:
 import mitt from 'mitt';
 import Peer from 'simple-peer';
 import createStore from 'unistore';
-import Centaurus from './centaurus.js';
 
 import { sha256, sha224 } from 'js-sha256';
 import md5 from 'js-md5';
@@ -107,37 +106,6 @@ var Plugin = class FugitivePlugin {
 
   }
 }
-let C = new Centaurus('/centaurus.worker.js');
-Promise.resolve()
-  .then(() => {
-    return C.loadScripts('https://unpkg.com/pako@1.0.6/dist/pako.min.js');
-  })
-  .then(() => {
-    return C.registerFunctions({
-      test: (resolve, reject) => {
-        console.log('function test executed');
-        resolve(123456);
-      },
-      checkPako: (resolve, reject, param1, param2) => {
-        console.log(pako);
-        var result = ''.concat(param1, ' ', param2);
-        resolve(result);
-      }
-    });
-  })
-  .then(() => {
-    return C.test().then(console.log);
-  })
-  .then(() => {
-    return C.checkPako('is pako found?', 'yes!').then(console.log);
-  })
-  .catch(console.error);
-window.C = C;
-setTimeout(() => {
-
-
-
-}, 2000);
 
 
 // @approximate-distance
