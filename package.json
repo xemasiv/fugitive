@@ -20,7 +20,8 @@
   "scripts": {
     "start": "node --nouse-idle-notification --expose-gc index.js",
     "build": "webpack --mode=production",
-    "dev": "webpack --mode=development --watch"
+    "dev": "webpack --mode=development --watch",
+    "prod": "webpack --mode=production --watch"
   },
   "devDependencies": {
     "babel-core": "^6.26.3",

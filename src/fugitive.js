@@ -1,59 +1,24 @@
-import serialize from 'serialize-javascript';
+import { Compressor, Decompressor } from './helpers/pakoWorkers';
+import { Serializer, Deserializer } from './helpers/msgpackWorkers';
 
 const debug = false;
 
-class FugitiveWorker {
-  constructor (opts) {
-    const { path, method, imports, setup, debug, label, handler } = opts;
-    const worker = new Worker(path);
-    worker.postMessage({
-      imports, label, debug,
-      setup: serialize(setup),
-      method: serialize(method)
-    });
-    const handlers = [];
-    worker.onmessage = ({ data }) => {
-      typeof handlers[0] === 'function' ? handlers.shift()(data) : handlers.shift();
-    };
-    this.handlers = handlers;
-    this.worker = worker;
-  }
-  send (message, handler) {
-    this.handlers.push(handler ? handler : undefined);
-    this.worker.postMessage(message);
-  }
-}
+const Compress = Compressor({ debug, level: 9, memLevel: 9 });
+const Decompress = Decompressor({ debug });
+const Serialize = Serializer({ debug });
+const Deserialize = Deserializer({ debug });
 
-let Compressor = new FugitiveWorker({
-  label: 'Compressor',
-  path: '/fugitive.worker.min.js',
-  imports: [ 'https://unpkg.com/pako@1.0.6/dist/pako.min.js' ],
-  method: (resolve, parameter) => {
-    console.log('received:', parameter);
-    resolve(
-      pako.deflate(parameter, {
-        level: 0,
-        memLevel: 9
+const timeStart = Date.now();
+Serialize({ a: 1, bytes: new Uint8Array(1000000) }, (serialized) => {
+  // console.log('serialized:', serialized);
+  Compress(serialized, (compressed) => {
+    // console.log('compressed:', compressed);
+    Decompress(compressed, (decompressed) => {
+      // console.log('decompressed:', decompressed);
+      Deserialize(decompressed, (deserialized) => {
+        console.log(Date.now() - timeStart);
+        // console.log('deserialized:', deserialized);
       })
-    );
-  },
-  debug
-});
-let Decompressor = new FugitiveWorker({
-  label: 'Decompressor',
-  path: '/fugitive.worker.min.js',
-  imports: [ 'https://unpkg.com/pako@1.0.6/dist/pako.min.js' ],
-  method: (resolve, parameter) => {
-    console.log('received:', parameter);
-    resolve(
-      pako.inflate(parameter)
-    );
-  },
-  debug
-});
-Compressor.send(new Uint8Array(100), (compressed) => {
-  console.log('compressed:', compressed);
-  Decompressor.send(compressed, (decompressed) => {
-    console.log('decompressed:', decompressed);
+    });
   });
 });
