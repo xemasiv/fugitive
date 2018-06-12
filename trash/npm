@@ -1,0 +1,9 @@
+"babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.7.0",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3"
+
+yarn add babel-loader babel-preset-env uglifyjs-webpack-plugin webpack webpack-cli -D
