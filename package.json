@@ -7,6 +7,7 @@
   "license": "CC-BY-4.0",
   "dependencies": {
     "debug": "^3.1.0",
+    "fastqueue": "^0.1.0",
     "js-md5": "^0.7.3",
     "js-sha256": "^0.9.0",
     "mitt": "^1.1.3",

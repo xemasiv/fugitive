@@ -1,4 +1,5 @@
 import serialize from 'serialize-javascript';
+import fastqueue from 'fastqueue';
 
 class FugitiveWorker {
   constructor (opts) {
@@ -9,9 +10,10 @@ class FugitiveWorker {
       setup: serialize(setup),
       method: serialize(method)
     });
-    const handlers = [];
+    const handlers = new fastqueue();
     worker.onmessage = ({ data }) => {
-      typeof handlers[0] === 'function' ? handlers.shift()(data) : handlers.shift();
+      let handler = handlers.shift();
+      if (typeof handler === 'function') handler(data);
     };
     this.handlers = handlers;
     this.worker = worker;
