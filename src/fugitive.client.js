@@ -13,6 +13,9 @@ import QuickLRU from 'quick-lru';
 import { fetch, AbortController } from 'yetch';
 // import 'webrtc-adapter/out/adapter.js';
 
+import { blobToBase64String, base64StringToBlob } from 'blob-util'
+
+
 const log = debug('client');
 log.enabled = true;
 
@@ -39,7 +42,7 @@ class FugitiveClient {
       log('multicasting', m);
       rtcs.map((rtc) => {
         log('unicasting', m);
-        rtc.send((m));
+        rtc.send(msgpack.encode(m));
       });
     });
 
@@ -51,26 +54,39 @@ class FugitiveClient {
       }
     };
     let rtc;
-    /*
     const resolver = (rtc) => (data) => {
-      const { action, url, content } = data;
+      let { action, url, content } = msgpack.decode(data);
       log(action, url, content);
       switch (action) {
         case 'request':
-          if (lru.has(url)) {
+          if (lru.has(url) === true) {
             content = lru.get(url);
+            log('found', url, content);
             rtc.send(
               msgpack.encode({
                 action: 'resolve', url, content
               })
             );
+          } else {
+            log('not found', url);
+            rtc.send(
+              msgpack.encode({
+                action: 'resolve', url
+              })
+            );
           }
           break;
         case 'resolve':
+          if (content) {
+            log('content:', content);
+            content = base64StringToBlob(content, 'image/svg+xml');
+            log('content:', content);
+            content = URL.createObjectURL(content);
+            log('content:', content);
+          }
           break;
       }
     };
-    */
     ws.onmessage = ({ data: m }) => {
       const { status, offer, answer } = msgpack.decode(m);
       log('received:', status);
@@ -96,7 +112,7 @@ class FugitiveClient {
               rtcs.push(rtc);
               rtc.send('hello');
             });
-            rtc.on('data', console.warn);
+            rtc.on('data', resolver(rtc));
             rtc.on('error', console.error);
           }
           break;
@@ -116,7 +132,7 @@ class FugitiveClient {
               log(rtc);
               // rtc.send('hello');
             });
-            rtc.on('data', console.warn);
+            rtc.on('data', resolver(rtc));
             rtc.on('error', console.error);
           }
           rtc.signal(offer);
@@ -148,13 +164,16 @@ class FugitiveClient {
           );
         })
         .then((blob) => {
-          // let f = new FileReader();
-          // f.readAsArrayBuffer(blob);
-          // f.onloadend = () => {
-          //   let h = sha224(f.result);
-          //   self.lru.set(h, blob);
-          // };
-          self.lru.set(url, blob);
+          log(blob);
+          let f = new FileReader();
+          f.readAsArrayBuffer(blob);
+          f.onloadend = () => {
+            let h = sha224(f.result);
+          };
+          blobToBase64String(blob)
+            .then((str) => {
+              self.lru.set(url, str);
+            });
           let u = URL.createObjectURL(blob);
           resolve(u);
         })
