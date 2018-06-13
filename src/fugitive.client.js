@@ -112,8 +112,8 @@ class FugitiveClient {
         let f = new FileReader();
         f.readAsArrayBuffer(blob);
         f.onloadend = () => {
-          log(f.result);
-          log(sha224(f.result));
+          let h = sha224(f.result);
+          self.lru.set(h, blob);
         };
         return Promise.resolve(
           URL.createObjectURL(blob)
