@@ -1,13 +1,18 @@
 import pako from 'pako';
 import msgpack5 from 'msgpack5';
 import SimplePeer from 'simple-peer';
-import Peer from 'simple-peer';
-import mitt from 'mitt';
-import createStore from 'unistore';
+// import Peer from 'simple-peer';
+// import mitt from 'mitt';
+// import createStore from 'unistore';
 import { sha224 } from 'js-sha256';
-import md5 from 'js-md5';
-import PouchDB from 'pouchdb-browser';
+// import md5 from 'js-md5';
+// import PouchDB from 'pouchdb-browser';
 import debug from 'debug';
+import QuickLRU from 'quick-lru';
+
+import { fetch, AbortController } from 'yetch';
+
+const lru = new QuickLRU({maxSize: 100});
 
 const log = debug('client');
 log.enabled = true;
@@ -20,10 +25,6 @@ class FugitiveClient {
 
     const target_rtc_count = 1;
 
-    const emitter = mitt();
-    const on = emitter.on.bind(emitter);
-    const emit = emitter.emit.bind(emitter);
-    const off = emitter.off.bind(emitter);
     self.on = on;
     self.emit = emit;
     self.off = off;
@@ -54,7 +55,8 @@ class FugitiveClient {
           break;
         case 'creating_offer':
           rtc = new SimplePeer({
-            initiator: true
+            initiator: true,
+            trickle: true
           });
           rtc.on('signal', (offer) => {
             send({
@@ -68,7 +70,8 @@ class FugitiveClient {
           break;
         case 'receiving_offer':
           rtc = new SimplePeer({
-            initiator: false
+            initiator: false,
+            trickle: true
           });
           rtc.signal(offer);
           rtc.on('signal', (answer) => {
@@ -94,7 +97,10 @@ class FugitiveClient {
     };
     ws.onerror = console.error;
   }
+  fetch (url, opts = {}) {
+    
+  }
 }
 
 const Client = new FugitiveClient();
-Client.on('connected', console.log)
+window.Client = Client;

@@ -6,6 +6,7 @@
   "author": "xemasiv <xemasiv@gmail.com>",
   "license": "CC-BY-4.0",
   "dependencies": {
+    "abortcontroller-polyfill": "^1.1.9",
     "debug": "^3.1.0",
     "fastqueue": "^0.1.0",
     "js-md5": "^0.7.3",
@@ -14,9 +15,11 @@
     "msgpack5": "^4.2.0",
     "pako": "^1.0.6",
     "pouchdb-browser": "^6.4.3",
+    "quick-lru": "^1.1.0",
     "simple-peer": "^9.1.2",
     "unistore": "^3.0.6",
-    "uws": "^10.148.0"
+    "uws": "^10.148.0",
+    "yetch": "^1.1.0"
   },
   "scripts": {
     "start": "node --nouse-idle-notification --expose-gc index.js",
