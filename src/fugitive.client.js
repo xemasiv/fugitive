@@ -98,27 +98,33 @@ class FugitiveClient {
   }
   blob (url, opts = {}) {
     const self = this;
-    let controller = new AbortController();
-    opts.signal = controller.signal;
-    return fetch(url, opts)
-      .then((response) => {
-        if (response.ok) return response.blob();
-        throw new Error(
-          'Network error in response.'
-        );
-      })
-      .then((blob) => {
-        console.log({ blob });
-        let f = new FileReader();
-        f.readAsArrayBuffer(blob);
-        f.onloadend = () => {
-          let h = sha224(f.result);
-          self.lru.set(h, blob);
-        };
-        return Promise.resolve(
-          URL.createObjectURL(blob)
-        );
-      });
+    return new Promise((resolve, reject) => {
+      let controller = new AbortController();
+      opts.signal = controller.signal;
+      fetch(url, opts)
+        .then((response) => {
+          if (response.ok) return response.blob();
+          throw new Error(
+            'Network error in response.'
+          );
+        })
+        .then((blob) => {
+          let f = new FileReader();
+          f.readAsArrayBuffer(blob);
+          f.onloadend = () => {
+            let h = sha224(f.result);
+            self.lru.set(h, blob);
+          };
+          let u = URL.createObjectURL(blob);
+          resolve(u);
+        })
+        .catch((ex) => {
+          if (ex.name === 'AbortError') {
+            log('request aborted')
+          }
+          // reject(ex);
+        });
+    });
   }
 }
 
