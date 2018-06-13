@@ -12,7 +12,6 @@ import QuickLRU from 'quick-lru';
 
 import { fetch, AbortController } from 'yetch';
 
-const lru = new QuickLRU({maxSize: 100});
 
 const log = debug('client');
 log.enabled = true;
@@ -23,11 +22,11 @@ class FugitiveClient {
   constructor () {
     const self = this;
 
-    const target_rtc_count = 1;
+    const lru = new QuickLRU({maxSize: 100});
 
-    self.on = on;
-    self.emit = emit;
-    self.off = off;
+    self.lru = lru;
+
+    const target_rtc_count = 1;
 
     const rtcs = [];
 
@@ -97,8 +96,29 @@ class FugitiveClient {
     };
     ws.onerror = console.error;
   }
-  fetch (url, opts = {}) {
-    
+  blob (url, opts = {}) {
+    const self = this;
+    let controller = new AbortController();
+    opts.signal = controller.signal;
+    return fetch(url, opts)
+      .then((response) => {
+        if (response.ok) return response.blob();
+        throw new Error(
+          'Network error in response.'
+        );
+      })
+      .then((blob) => {
+        console.log({ blob });
+        let f = new FileReader();
+        f.readAsArrayBuffer(blob);
+        f.onloadend = () => {
+          log(f.result);
+          log(sha224(f.result));
+        };
+        return Promise.resolve(
+          URL.createObjectURL(blob)
+        );
+      });
   }
 }
 
