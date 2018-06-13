@@ -19,6 +19,7 @@
     "simple-peer": "^9.1.2",
     "unistore": "^3.0.6",
     "uws": "^10.148.0",
+    "webrtc-adapter": "^6.2.1",
     "yetch": "^1.1.0"
   },
   "scripts": {

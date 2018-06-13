@@ -11,7 +11,7 @@ import debug from 'debug';
 import QuickLRU from 'quick-lru';
 
 import { fetch, AbortController } from 'yetch';
-
+// import 'webrtc-adapter/out/adapter.js';
 
 const log = debug('client');
 log.enabled = true;
@@ -39,7 +39,7 @@ class FugitiveClient {
       log('multicasting', m);
       rtcs.map((rtc) => {
         log('unicasting', m);
-        rtc.send(msgpack.encode(m));
+        rtc.send((m));
       });
     });
 
@@ -51,8 +51,9 @@ class FugitiveClient {
       }
     };
     let rtc;
+    /*
     const resolver = (rtc) => (data) => {
-      const { action, url, content } = msgpack.decode(data);
+      const { action, url, content } = data;
       log(action, url, content);
       switch (action) {
         case 'request':
@@ -69,6 +70,7 @@ class FugitiveClient {
           break;
       }
     };
+    */
     ws.onmessage = ({ data: m }) => {
       const { status, offer, answer } = msgpack.decode(m);
       log('received:', status);
@@ -80,37 +82,44 @@ class FugitiveClient {
           log('awaiting offer..');
           break;
         case 'creating_offer':
-          rtc = new SimplePeer({ initiator: true });
-          rtc.on('signal', (offer) => {
-            send({
-              status: 'sending_offer',
-              offer
+          log(Boolean(rtc));
+          if (Boolean(rtc) === false) {
+            rtc = new SimplePeer({ initiator: true });
+            rtc.on('signal', (offer) => {
+              send({
+                status: 'sending_offer',
+                offer
+              });
             });
-          });
-          rtc.on('connect', () => {
-            log('alice connected');
-            rtcs.push(rtc);
-            rtc.send('hello');
-          });
-          rtc.on('data', resolver(rtc));
-          rtc.on('error', console.error);
+            rtc.on('connect', () => {
+              log('alice connected');
+              rtcs.push(rtc);
+              rtc.send('hello');
+            });
+            rtc.on('data', console.warn);
+            rtc.on('error', console.error);
+          }
           break;
         case 'receiving_offer':
-          rtc = new SimplePeer();
-          rtc.signal(offer);
-          rtc.on('signal', (answer) => {
-            send({
-              status: 'sending_answer',
-              answer
+          log(Boolean(rtc));
+          if (Boolean(rtc) === false) {
+            rtc = new SimplePeer();
+            rtc.on('signal', (answer) => {
+              send({
+                status: 'sending_answer',
+                answer
+              });
             });
-          });
-          rtc.on('connect', () => {
-            log('bob connected');
-            rtcs.push(rtc);
-            rtc.send('hello');
-          });
-          rtc.on('data', resolver(rtc));
-          rtc.on('error', console.error);
+            rtc.on('connect', () => {
+              log('bob connected');
+              rtcs.push(rtc);
+              log(rtc);
+              // rtc.send('hello');
+            });
+            rtc.on('data', console.warn);
+            rtc.on('error', console.error);
+          }
+          rtc.signal(offer);
           break;
         case 'receiving_answer':
           rtc.signal(answer);
