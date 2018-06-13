@@ -1,7 +1,7 @@
-import FugitiveWorker from '../core/FugitiveWorker';
+import DedicatedWorker from '../core/DedicatedWorker';
 
 export const Compressor = ({ level, memLevel, debug }) => {
-  let Compress = new FugitiveWorker({
+  let Compress = new DedicatedWorker({
     label: 'Compressor',
     path: '/fugitive.worker.min.js',
     imports: [ 'https://unpkg.com/pako@1.0.6/dist/pako.min.js' ],
@@ -18,7 +18,7 @@ export const Compressor = ({ level, memLevel, debug }) => {
   return Compress.send.bind(Compress);
 };
 export const Decompressor = ({ debug }) => {
-  let Decompress = new FugitiveWorker({
+  let Decompress = new DedicatedWorker({
     label: 'Decompressor',
     path: '/fugitive.worker.min.js',
     imports: [ 'https://unpkg.com/pako@1.0.6/dist/pako.min.js' ],

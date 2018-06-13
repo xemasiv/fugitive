@@ -1,7 +1,7 @@
 import serialize from 'serialize-javascript';
 import fastqueue from 'fastqueue';
 
-class FugitiveWorker {
+class DedicatedWorker {
   constructor (opts) {
     const { path, method, imports, setup, debug, label, handler } = opts;
     const worker = new Worker(path);
@@ -24,4 +24,4 @@ class FugitiveWorker {
   }
 }
 
-export default FugitiveWorker;
+export default DedicatedWorker;

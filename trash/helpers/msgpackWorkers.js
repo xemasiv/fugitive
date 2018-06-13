@@ -1,7 +1,7 @@
-import FugitiveWorker from '../core/FugitiveWorker';
+import DedicatedWorker from '../core/DedicatedWorker';
 
 export const Serializer = ({ debug }) => {
-  let Serialize = new FugitiveWorker({
+  let Serialize = new DedicatedWorker({
     label: 'Serializer',
     path: '/fugitive.worker.min.js',
     imports: [ 'https://unpkg.com/msgpack5@4.2.0/dist/msgpack5.min.js' ],
@@ -18,7 +18,7 @@ export const Serializer = ({ debug }) => {
   return Serialize.send.bind(Serialize);
 };
 export const Deserializer = ({ debug }) => {
-  let Deserialize = new FugitiveWorker({
+  let Deserialize = new DedicatedWorker({
     label: 'Deserializer',
     path: '/fugitive.worker.min.js',
     imports: [ 'https://unpkg.com/msgpack5@4.2.0/dist/msgpack5.min.js' ],

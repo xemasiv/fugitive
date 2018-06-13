@@ -1,14 +1,15 @@
 const Uglify = require('uglifyjs-webpack-plugin');
+const NodeExternals = require('webpack-node-externals');
 
-const fugitive = (env, argv) => {
-  console.log('fugitive', '@', argv.mode);
+const fugitiveClient = (env, argv) => {
+  console.log('fugitiveClient', '@', argv.mode);
   let config = {
     entry: [
-      './src/fugitive.js',
+      './src/fugitive.client.js',
     ],
     output: {
       path: `${__dirname}/dist`,
-      filename: 'fugitive.min.js',
+      filename: 'fugitive.client.min.js',
     },
     module: {
       rules: [
@@ -42,15 +43,15 @@ const fugitive = (env, argv) => {
   return config;
 };
 
-const fugitive_worker = (env, argv) => {
-  console.log('fugitive.worker', '@', argv.mode);
+const fugitiveServer = (env, argv) => {
+  console.log('fugitiveServer', '@', argv.mode);
   let config = {
     entry: [
-      './src/fugitive.worker.js',
+      './src/fugitive.server.js',
     ],
     output: {
       path: `${__dirname}/dist`,
-      filename: 'fugitive.worker.min.js',
+      filename: 'fugitive.server.min.js',
     },
     module: {
       rules: [
@@ -61,6 +62,7 @@ const fugitive_worker = (env, argv) => {
         },
       ],
     },
+    externals: [NodeExternals()],
   };
   if (argv.mode !== 'development') {
     config.optimization = {
@@ -84,4 +86,4 @@ const fugitive_worker = (env, argv) => {
   return config;
 };
 
-module.exports = [fugitive, fugitive_worker];
+module.exports = [fugitiveClient, fugitiveServer];

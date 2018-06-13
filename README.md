@@ -1,6 +1,50 @@
 # fugitive
 websockets & webrtc experiments
 
+## MVP
+
+* Serialize / Deserialize w/ `msgpak`
+* Compress / Decompress w/ `pako`
+* WebSockets w/ `uws` (for server)
+* WebRTC w/ `simple-peer` (for clients)
+
+## Stalled
+
+* Serialization w/ `msgpack` can be done with Web Workers
+* Compression w/ `pako` can be done with Web Workers
+* WebSockets can be done with Web Workers
+* File Storage w/ `pouchdb` can be done with Web Workers
+
+#### p2p next-requested resource sharing
+
+When client is idle, peers fulfill succeeding resources
+the user may 'possibly' request to the server in the future.
+
+For example, we have user Alice.
+
+1. Alice made a search query for 'Dogs'.
+  * This request is sent to the server
+  * This request is also sent to Alice's Tier-1 peers
+2. Alice receives response for page 1 from server
+  This response contains:
+  * Page 1 results
+  * Hash of page 2 results
+  * Hash of page 3 results
+3. Tier-1 peers ask Alice's Tier-2 peers if they
+4. Alice is now reading page 1.
+  Behind the scenes:
+  * Alice verified if Bob (a Tier-1 peer) has page 2 results with matching hash
+  * Bob sends Alice these page 2 results
+  * Alice finds out Bob doesn't have, but maybe a Tier-2 peer has results for page-3
+  * Bob (a Tier-1 peer) asks Charlie (a Tier-2 peer) for it
+  * Bob forwards it to Alice
+
+#### content segment assigning
+
+
+
+---
+
 ## Goals
 
 * Offload loading of assets to peers
