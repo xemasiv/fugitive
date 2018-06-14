@@ -1,6 +1,60 @@
 # fugitive
 Orchestrated p2p delivery network
 
+## Solved Issues
+
+* Server-assisted pairing
+* Server-assisted signalling
+* Cancellable fetch with `yetch`
+* Request multi-unicast to Tier-1 peers
+* Storing of server-fetched resource to `quick-lru`
+* Resource fetching from `quick-lru`
+* Response chunking by `16 * 1024` bytes
+
+## Existing Issues
+
+* Server Instance
+  * Clustering support?
+* Client Instance
+  * Target max connection count
+  * Function to check if needed
+  * Re-checks on WebRTC disconnects
+* WebSockets
+  * Reconnection + Exponential Back-off
+  * Disconnected events, server-side
+* Pairing
+  * Add context support (ie. by Origin?)
+  * Best-match-by-distance as calculated factor?
+* WebRTC
+  * Reconnection
+  * Disconnected events, server-side
+  * Latency testing & peer eviction support?
+* Requests
+  * De-coupling of content-type from input / output (functional)
+  * Fetching from Tier-2 peers?
+* Transfers
+  * Locking of peer during transfer
+  * Unlocking of peer during fetch-fulfilled requests
+* Compression
+  * Checking if content is worth keeping as compressed or not
+  * Indicator if receiver should decompress or not
+* Storage
+  * Replace Sindre's LRU with PouchDB?
+
+## Implementation Sugars
+
+* Use of Web Workers
+  * For WebSocket Client connection
+  * For `pako` compressor
+  * For `msgpack5` serializer
+  * For `pouchdb-browser` storage?
+
+## References
+
+* https://www.html5rocks.com/en/tutorials/webrtc/datachannels/
+* https://stackoverflow.com/a/35381583
+* https://stackoverflow.com/a/43433129
+
 ## License
 
 Copyright 2018 Joshua Samonte
