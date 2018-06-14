@@ -1,6 +1,8 @@
 # fugitive
 Orchestrated p2p delivery network
 
+fugitive is
+
 ## Solved Issues
 
 * Server-assisted pairing
@@ -40,6 +42,13 @@ Orchestrated p2p delivery network
   * Indicator if receiver should decompress or not
 * Storage
   * Replace Sindre's LRU with PouchDB?
+* Performance Sensitivity
+  * Disable on low battery?
+  * Decrease limits on browser devices?
+  * Disable when window is inactive?
+    * https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+  * Disable when using 4g internet?
+    * https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API
 
 ## Implementation Sugars
 
@@ -54,6 +63,7 @@ Orchestrated p2p delivery network
 * https://www.html5rocks.com/en/tutorials/webrtc/datachannels/
 * https://stackoverflow.com/a/35381583
 * https://stackoverflow.com/a/43433129
+* https://news.ycombinator.com/item?id=5452780 (lol for real)
 
 ## License
 
