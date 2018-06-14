@@ -88,7 +88,12 @@ class FugitiveClient {
             if (content) {
               handler = handlers.get(url);
               handler.abort();
-              content = new Blob([content], { type: handler.type });
+              log('compressed:', content.byteLength);
+              log('decompressed:', pako.inflate(content).byteLength);
+              content = new Blob(
+                [pako.inflate(content)],
+                { type: handler.type }
+              );
               log('content:', content);
               content = URL.createObjectURL(content);
               log('content:', content);
@@ -190,7 +195,12 @@ class FugitiveClient {
           blobToArrayBuffer(blob)
             .then((buffer) => {
               log('buffer:', buffer);
-              self.lru.set(url, new Uint8Array(buffer));
+              self.lru.set(url,
+                pako.deflate(new Uint8Array(buffer), {
+                  level: 9,
+                  memLevel: 9
+                })
+              );
             });
           let u = URL.createObjectURL(blob);
           self.handlers.delete(url);
