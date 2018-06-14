@@ -1,10 +1,10 @@
 {
   "name": "fugitive",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "dist/fugitive.server.min.js",
   "repository": "git@github.com:xemasiv/fugitive.git",
   "author": "xemasiv <xemasiv@gmail.com>",
-  "license": "CC-BY-4.0",
+  "license": "MIT",
   "dependencies": {
     "abortcontroller-polyfill": "^1.1.9",
     "blob-util": "^2.0.2",

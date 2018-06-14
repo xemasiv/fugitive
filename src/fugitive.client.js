@@ -13,7 +13,7 @@ import QuickLRU from 'quick-lru';
 import { fetch, AbortController } from 'yetch';
 // import 'webrtc-adapter/out/adapter.js';
 
-import { blobToBase64String, base64StringToBlob } from 'blob-util'
+import { blobToArrayBuffer, arrayBufferToBlob } from 'blob-util'
 
 
 const log = debug('client');
@@ -54,8 +54,13 @@ class FugitiveClient {
       }
     };
     let rtc;
+
+    let handlers = new Map();
+    self.handlers = handlers;
+
     const resolver = (rtc) => (data) => {
       let { action, url, content } = msgpack.decode(data);
+      let handler;
       log(action, url, content);
       switch (action) {
         case 'request':
@@ -79,10 +84,17 @@ class FugitiveClient {
         case 'resolve':
           if (content) {
             log('content:', content);
-            content = base64StringToBlob(content, 'image/svg+xml');
-            log('content:', content);
-            content = URL.createObjectURL(content);
-            log('content:', content);
+            // content = arrayBufferToBlob(content, 'image/svg+xml');
+            if (content) {
+              handler = handlers.get(url);
+              handler.abort();
+              content = new Blob([content], { type: handler.type });
+              log('content:', content);
+              content = URL.createObjectURL(content);
+              log('content:', content);
+              handler.resolve(content);
+            }
+            handlers.delete(url);
           }
           break;
       }
@@ -150,11 +162,16 @@ class FugitiveClient {
     };
     ws.onerror = console.error;
   }
-  blob (url, opts = {}) {
+  blob (url, type, opts = {}) {
     const self = this;
     return new Promise((resolve, reject) => {
       let controller = new AbortController();
       opts.signal = controller.signal;
+      self.handlers.set(url, {
+        resolve: resolve,
+        abort: controller.abort.bind(controller),
+        type
+      });
       self.send({ action: 'request', url });
       fetch(url, opts)
         .then((response) => {
@@ -165,23 +182,26 @@ class FugitiveClient {
         })
         .then((blob) => {
           log(blob);
-          let f = new FileReader();
-          f.readAsArrayBuffer(blob);
-          f.onloadend = () => {
-            let h = sha224(f.result);
-          };
-          blobToBase64String(blob)
-            .then((str) => {
-              self.lru.set(url, str);
+          // let f = new FileReader();
+          // f.readAsArrayBuffer(blob);
+          // f.onloadend = () => {
+          //   let h = sha224(f.result);
+          // };
+          blobToArrayBuffer(blob)
+            .then((buffer) => {
+              log('buffer:', buffer);
+              self.lru.set(url, new Uint8Array(buffer));
             });
           let u = URL.createObjectURL(blob);
+          self.handlers.delete(url);
           resolve(u);
         })
         .catch((ex) => {
           if (ex.name === 'AbortError') {
             log('request aborted')
+          } else {
+            reject(ex);
           }
-          // reject(ex);
         });
     });
   }
