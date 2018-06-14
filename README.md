@@ -49,6 +49,8 @@ fugitive is
     * https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
   * Disable when using 4g internet?
     * https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API
+  * Allow high-precision mode?
+    * https://developer.mozilla.org/en-US/docs/Web/API/Geolocation
 
 ## Implementation Sugars
 
