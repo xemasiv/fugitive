@@ -13,8 +13,9 @@ import QuickLRU from 'quick-lru';
 import { fetch, AbortController } from 'yetch';
 // import 'webrtc-adapter/out/adapter.js';
 
-import { blobToArrayBuffer, arrayBufferToBlob } from 'blob-util'
+import { blobToArrayBuffer } from 'blob-util'
 
+import chunk from 'lodash.chunk';
 
 const log = debug('client');
 log.enabled = true;
@@ -58,7 +59,95 @@ class FugitiveClient {
     let handlers = new Map();
     self.handlers = handlers;
 
+
+    let transferring = new Map();
+    let temp = new Map();
+
+    // http://2ality.com/2015/10/concatenating-typed-arrays.html
+    const uint8concat = (resultConstructor, ...arrays) => {
+      let totalLength = 0;
+      for (let arr of arrays) {
+        totalLength += arr.length;
+      }
+      let result = new resultConstructor(totalLength);
+      let offset = 0;
+      for (let arr of arrays) {
+        result.set(arr, offset);
+        offset += arr.length;
+      }
+      return result;
+    }
     const resolver = (rtc) => (data) => {
+      if (transferring.has(rtc) === true) {
+        if (data.length > 1) {
+          log('received chunk:', data);
+          temp.set(
+            rtc,
+            uint8concat(Uint8Array, temp.get(rtc), data)
+          );
+        } else {
+          let content = temp.get(rtc);
+          log('all chunks:', content);
+          let url = transferring.get(rtc);
+          let handler = handlers.get(url);
+          handler.abort();
+
+          log('compressed:', content.byteLength);
+          log('decompressed:', pako.inflate(content).byteLength);
+          content = new Blob(
+            [pako.inflate(content)],
+            { type: handler.type }
+          );
+          log('content:', content);
+          content = URL.createObjectURL(content);
+          log('content:', content);
+          handler.resolve(content);
+
+          handlers.delete(url);
+
+        }
+      } else {
+        let { action, url } = msgpack.decode(data);
+        let handler, chunks, content;
+        log('FROM PEER', action, url);
+        switch (action) {
+          case 'requesting':
+            if (lru.has(url) === true) {
+              content = lru.get(url);
+              rtc.send(
+                msgpack.encode({
+                  action: 'transferring', url
+                })
+              );
+              log('content is:', content);
+              chunks = chunk(content, 16 * 1024);
+              log('chunks are:', chunks);
+              chunks.push(new Uint8Array([0]));
+              chunks.map((chunk) => {
+                log('sending chunk:', chunk);
+                rtc.send(Uint8Array.from(chunk));
+              });
+            } else {
+              rtc.send(
+                msgpack.encode({
+                  action: 'rejecting', url
+                })
+              );
+            }
+            break;
+          case 'transferring':
+            transferring.set(rtc, url);
+            temp.set(rtc, new Uint8Array());
+            break;
+          case 'rejecting':
+            if (handlers.has(url) === true) {
+              handlers.delete(url);
+            }
+            break;
+        }
+      }
+      return;
+      /*
       let { action, url, content } = msgpack.decode(data);
       let handler;
       log(action, url, content);
@@ -67,25 +156,30 @@ class FugitiveClient {
           if (lru.has(url) === true) {
             content = lru.get(url);
             log('found', url, content);
+            log(chunk(content, 16 * 1024));
             rtc.send(
               msgpack.encode({
-                action: 'resolve', url, content
+                action: 'resolving', url
               })
             );
           } else {
             log('not found', url);
             rtc.send(
               msgpack.encode({
-                action: 'resolve', url
+                action: 'not_found', url
               })
             );
           }
           break;
+        case 'not_found':
+          break;
+        case 'resolving':
+
+          break;
         case 'resolve':
           if (content) {
             log('content:', content);
-            // content = arrayBufferToBlob(content, 'image/svg+xml');
-            if (content) {
+            if (content && handlers.has(url) === true) {
               handler = handlers.get(url);
               handler.abort();
               log('compressed:', content.byteLength);
@@ -99,10 +193,13 @@ class FugitiveClient {
               log('content:', content);
               handler.resolve(content);
             }
-            handlers.delete(url);
+            if (handlers.has(url) === true) {
+              handlers.delete(url);
+            }
           }
           break;
-      }
+      } */
+
     };
     ws.onmessage = ({ data: m }) => {
       const { status, offer, answer } = msgpack.decode(m);
@@ -177,7 +274,7 @@ class FugitiveClient {
         abort: controller.abort.bind(controller),
         type
       });
-      self.send({ action: 'request', url });
+      self.send({ action: 'requesting', url });
       fetch(url, opts)
         .then((response) => {
           if (response.ok) return response.blob();
@@ -220,3 +317,4 @@ class FugitiveClient {
 const Client = new FugitiveClient();
 window.Client = Client;
 window.msgpack = msgpack;
+window.pako = pako;
