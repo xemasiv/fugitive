@@ -34,7 +34,7 @@ Optimizations
 Can we use a binder?
 Yes.
 
-
+```
 // create an observer instance
 var target = document.querySelector('#something');
 console.log(target);
@@ -52,6 +52,7 @@ observer.observe(target, { attributes: true, childList: true, characterData: tru
 setInterval(function(){
     document.querySelector('#something').innerHTML = Math.random();
 },1000);
+```
 We can watch it for changes, and cache contents which are fucking big.
 
 demo @ http://jsfiddle.net/6Jajs/1/
@@ -63,9 +64,12 @@ mdn @ https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
 > This can be used to automatically cache the following:
 > images (jpg/jpeg/gif/png/svg);
 
+```
 x = new XMLSerializer();
 y = new DOMParser();
 y.parseFromString(x.serializeToString(document.querySelector('body')), 'text/html');
+```
+
 @ https://w3c.github.io/DOM-Parsing/#the-domparser-interface
 
 History & Location?
