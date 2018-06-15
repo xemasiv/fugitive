@@ -3,6 +3,13 @@ websockets & webrtc experiments
 
 ---
 
+What if server owners contribute to it?
+
+Throttling by bandwidth on application-level is fucked - that's silly.
+Contributors can limit their max supported peer count instead.
+
+https://www.remoteonly.org
+
 1. Rise of SPA's
 2. Web Platform Improvements
 	+ Fetch abort support
