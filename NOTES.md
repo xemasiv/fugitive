@@ -10,6 +10,10 @@ Contributors can limit their max supported peer count instead.
 
 https://www.remoteonly.org
 
+We got Risks
+
+We got Why is it possible now
+
 1. Rise of SPA's
 2. Web Platform Improvements
 	+ Fetch abort support
