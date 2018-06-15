@@ -1,6 +1,80 @@
 # fugitive
 websockets & webrtc experiments
 
+---
+
+1. Rise of SPA's
+2. Web Platform Improvements
+	+ Fetch abort support
+	+ WebRTC support
+3. Device-agnostic Javascript
+	+ Works in Web Browsers
+	+ Also works with React Native
+3. Increase in Device capability (Moore's law)
+4. Increase in Internet penetration & connectivity
+	+ more online devices
+5. Increase in Internet bandwidth quality
+	+ 4g, Fiber & 5g (in future)
+
+Axios can also be used:
+	* https://github.com/axios/axios#cancellation
+Improvements in encoding protocols & compression algorithms
+	* https://eng.uber.com/trip-data-squeeze/
+	* We use protocol buffers (from `pbf`) & zlib (from `pako`)
+Visualize with deck.gl / kepler.gl(uber)
+
+Optimizations
+	* Built-in p2p communications use protocol buffers.
+	* Binary blobs -> zlib:
+	* JSON objects -> msgpack -> zlib:
+	* Everything is transferred as binary.
+		* As protocol buffer buffers
+		* Or as compressed binary files (for files, ie. images)
+
+Can we use a binder?
+Yes.
+
+
+// create an observer instance
+var target = document.querySelector('#something');
+console.log(target);
+var observer = new WebKitMutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      console.log("Success");
+        //$('#log').text('input text changed: "' + target.text() + '"');
+        //console.log(mutation, mutation.type);
+    });    
+});
+observer.observe(target, { attributes: true, childList: true, characterData: true, subtree: true });
+//observer.disconnect(); - to stop observing
+
+// test case
+setInterval(function(){
+    document.querySelector('#something').innerHTML = Math.random();
+},1000);
+We can watch it for changes, and cache contents which are fucking big.
+
+demo @ http://jsfiddle.net/6Jajs/1/
+stackoverflow @ https://stackoverflow.com/a/24344093
+support @ https://caniuse.com/#feat=mutationobserver
+spec @ https://dom.spec.whatwg.org/#interface-mutationobserver
+mdn @ https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver
+
+> This can be used to automatically cache the following:
+> images (jpg/jpeg/gif/png/svg);
+
+x = new XMLSerializer();
+y = new DOMParser();
+y.parseFromString(x.serializeToString(document.querySelector('body')), 'text/html');
+@ https://w3c.github.io/DOM-Parsing/#the-domparser-interface
+
+History & Location?
+https://caniuse.com/#feat=history
+https://github.com/ReactTraining/history
+https://developer.mozilla.org/en-US/docs/Web/API/Location
+
+---
+
 ## MVP
 
 * Serialize / Deserialize w/ `msgpak`
