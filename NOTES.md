@@ -3,9 +3,12 @@ websockets & webrtc experiments
 
 ---
 
+https://github.com/Dash-Industry-Forum/dash.js/issues/860
+
 What if server owners contribute to it?
 
 Throttling by bandwidth on application-level is fucked - that's silly.
+
 Contributors can limit their max supported peer count instead.
 
 https://www.remoteonly.org
