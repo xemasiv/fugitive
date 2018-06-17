@@ -57,6 +57,8 @@ Now here come's Bob. I don't know what's lovely with cats these days but Bob als
 
 Holy figgetty fudge!! Turns out Bob just lives in the same city as Alice and Bob just loaded `cat.jpg` from her within `50ms`! Much much faster compared to the `150ms` it took for Alice to fetch it from our CDN!
 
+And hory forging sh8 m8 Bob just sent his brother Charlie downstairs a link to this `cat.jpg` pic, and since they're on the same network, Charlie just loaded it within a mind-blowing jaw-dropping eye-staggering `20ms`.
+
 The end!
 
 ## Glossary / Terms
