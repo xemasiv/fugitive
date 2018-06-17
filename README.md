@@ -11,11 +11,11 @@ That's pretty much it: encoding, compression & cache **plus** WebRTC, all to opt
 
 ## Why is it possible now
 
-(aka the motivating presumptions)
+(aka the non-statistical motivating presumptions)
 
 #### Moore's law
 
-* tl;dr we now got more and more devices in the market with higher compute capability. Processing power is one, processing stamina is another: pretty much everyone nowadays have their own almighty power bank.
+* We now got more and more devices in the market with higher compute capability. Processing power is one, processing stamina is another: pretty much everyone nowadays have their own almighty power bank.
 
 #### Increasing internet penetration & connectivity
 
@@ -23,7 +23,7 @@ That's pretty much it: encoding, compression & cache **plus** WebRTC, all to opt
 
 #### Increasing internet bandwidth quality
 
-* DSL's are continuously being replaced with Fiber, and 4g with 5g in the future. (this is it man, welcome to the future)
+* DSL's are continuously being replaced with Fiber, and 4g with 5g in the future.
 
 #### WebRTC
 
@@ -41,15 +41,33 @@ That's pretty much it: encoding, compression & cache **plus** WebRTC, all to opt
 
 * We can detect pretty much everything nowadays, ie. if you're running on a battery (laptop / mobile), or if you're running in a good WebRTC-worthy connection (4g & up). Basice device information like these allows us to create better (or more appropriately, smarter) modules.
 
+#### tl;dr
+
+* This is it man, welcome to the future.
+
+## How It Should Look Like
+
+We got two users of our website. Alice and Bob.
+
+Alice visits our website first where she then curiously navigates to our `/cats` page.
+
+We have a picture there: `cat.jpg` which is fetched from our `CDN`. Now - behind the scenes - since our website happens to use this library's `fetch` wrapper, this `cat.jpg`'s `blob` has been automatically converted into a `Uint8array` and compressed with `pako`'s zlib implementation at `{ level: 9, memLevel: 9}` option, and just kept stand-by.
+
+Now here come's Bob. I don't know what's lovely with cats these days but Bob also navigates to our `/cats` page! Wait, looks like Bob has established a WebRTC connection with Alice since visiting our homepage - and as it looks like Alice already got `cat.jpg` and is sending it right now to Bob!
+
+Holy figgetty fudge!! Turns out Bob just lives in the same city as Alice and Bob just loaded `cat.jpg` from her within `50ms`! Much much faster compared to the `150ms` it took for Alice to fetch it from our CDN!
+
+The end!
+
 ## Glossary / Terms
 
 #### Fugitive Server
 
-A server-side script whose purpose is to route signals between client instances, in order for them to establish WebRTC connections with each other. We are using `uws` for the WebSocket server instance.
+A server-side script whose purpose is to route signals between client instances, in order for them to establish WebRTC connections with each other. We are currently using `uws` for the WebSocket server instance.
 
 #### Fugitive Client
 
-A client-side script whose purpose is to establish WebRTC connection with other end-users, and to query & verify resources from these peers. We are using `simple-peer` for our WebRTC connection instances.
+A client-side script whose purpose is to establish WebRTC connection with other end-users, and to query & verify resources from these peers. We are currently using `simple-peer` for our WebRTC connection instances.
 
 #### Fugitive Fetch
 
@@ -70,63 +88,66 @@ These are client instances of other end users..
 
 ---
 
+## Roadmap
 
-## Solved Issues
+#### Server-side Mechanisms
 
-* Server-assisted pairing
-* Server-assisted signalling
-* Cancellable fetch with `yetch`
-* Request multi-unicast to Tier-1 peers
-* Storing of server-fetched resource to `quick-lru`
-* Resource fetching from `quick-lru`
-* Response chunking by `16 * 1024` bytes
+* Assisted signal forwarding ![done](/i/chk.png)
+* `first-available-pair` pairing ![done](/i/chk.png)
+* `approximate-distance-factor-pair` pairing
+* Clustering support
 
-## Existing Issues
+#### Client Mechanisms
 
-* Server Instance
-  * Clustering support?
-* Client Instance
-  * Target max connection count
-  * Function to check if needed
-  * Re-checks on WebRTC disconnects
-* WebSockets
-  * Reconnection + Exponential Back-off
-  * Disconnected events, server-side
-* Pairing
-  * Add context support (ie. by Origin?)
-  * Best-match-by-distance as calculated factor?
-* WebRTC
-  * Reconnection
-  * Disconnected events, server-side
-  * Latency testing & peer eviction support?
-* Requests
-  * De-coupling of content-type from input / output (functional)
-  * Fetching from Tier-2 peers?
-* Transfers
-  * Locking of peer during transfer
-  * Unlocking of peer during fetch-fulfilled requests
-* Compression
-  * Checking if content is worth keeping as compressed or not
-  * Indicator if receiver should decompress or not
-* Storage
-  * Replace Sindre's LRU with PouchDB?
-* Performance Sensitivity
-  * Disable on low battery?
-  * Decrease limits on browser devices?
-  * Disable when window is inactive?
-    * https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
-  * Disable when using 4g internet?
-    * https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API
-  * Allow high-precision mode?
-    * https://developer.mozilla.org/en-US/docs/Web/API/Geolocation
+* Signal: Offering ![done](/i/chk.png)
+* Signal: Answering ![done](/i/chk.png)
+* Response chunking by `16 * 1024` bytes ![done](/i/chk.png)
+* SHA 224 hash verification
+* *Integer* `min_target_peer_count` config option
+* *Integer* `max_target_peer_count` config option
+* Peer checks on websocket connect
+* Peer checks on peer connect & disconnect
+* *Boolean* `disconnect_websocket_on_max` config option
+* Exponential back-off mechanism on reconnection attempts
+* Passive resource reservation (w/ Tier-1 + Tier-2 peers)
+* Peer locking & unlocking between transfers
+* Passive latency checking & peer-eviction
+* Checking if content is worth keeping as compressed or not
+* Transfer indicator if content is compressed or not
+* Disable on low battery?
+* Decrease limits on mobile devices?
+* Disable when window is inactive? (Page Visibility API)
+* Disable when using 4g internet? (Network Information API)
+* Allow high-precision mode for clients? (Geolocation API)
 
-## Implementation Sugars
+#### Fugitive Fetch
 
-* Use of Web Workers
-  * For WebSocket Client connection
-  * For `pako` compressor
-  * For `msgpack5` serializer
-  * For `pouchdb-browser` storage?
+* Simulated multicast (multiple unicast) ![done](/i/chk.png)
+* In-memory caching, with `quick-lru` ![done](/i/chk.png)
+* De-coupling of content-type from input / output
+* IndexedDB persistent storage
+
+#### Web Assets Loading Examples
+
+* JS / CSS Scripts
+* Fonts
+* Images (jpg / png / svg / webp / gif)
+
+#### Web Workers
+
+* Encoding Worker, with `msgpack`
+* Compression Worker, with `pako`
+* WebSocket Client Worker
+
+#### MPEG DASH Loading Support
+
+* `fugitive-dashjs`, using fugitive fetch
+
+#### Visualizer / Playground
+
+* Using uber's `deck.gl`
+
+---
 
 ## References
 
