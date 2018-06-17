@@ -13,25 +13,33 @@ That's pretty much it: encoding, compression & cache **plus** WebRTC, all to opt
 
 (aka the motivating presumptions)
 
-#### The fundamentals:
+#### Moore's law
 
-1. Moore's law
-  * tl;dr we now got more and more devices in the market with higher compute capability. Processing power is one, processing stamina is another: pretty much everyone nowadays have their own almighty power bank.
-2. Increasing internet penetration & connectivity
-  * This means pursuits like this can also benefit end-user experiences in developing countries.
-3. Increasing internet bandwidth quality
-  * DSL's are continuously being replaced with Fiber, and 4g with 5g in the future. (this is it man, welcome to the future)
+* tl;dr we now got more and more devices in the market with higher compute capability. Processing power is one, processing stamina is another: pretty much everyone nowadays have their own almighty power bank.
 
-#### The awesome:
+#### Increasing internet penetration & connectivity
 
-1. WebRTC
-  * We can now establish direct connections with each other. We can do this not only on our desktop/laptop but also in our mobile phones nowadays.
-2. Web Workers
-  * Encoding / compression tasks can be handled by web worker threads which doesn't interfere with the main (aka user interface) thread.
-3. Rise of SPA's
-  * Great websites use good frameworks. These frameworks like React/Vue allows us to navigate web apps without refreshing the page. Not refreshing the page means existing WebRTC connections won't come to waste and can be maximized to full utility.
-4. Smarter Web API's
-  * We can detect pretty much everything nowadays, ie. if you're running on a battery (laptop / mobile), or if you're running in a good WebRTC-worthy connection (4g & up). Basice device information like these allows us to create better (or more appropriately, smarter) modules.
+* This means pursuits like this can also benefit end-user experiences in developing countries.
+
+#### Increasing internet bandwidth quality
+
+* DSL's are continuously being replaced with Fiber, and 4g with 5g in the future. (this is it man, welcome to the future)
+
+#### WebRTC
+
+* We can now establish direct connections with each other. We can do this not only on our desktop/laptop but also in our mobile phones nowadays.
+
+#### Web Workers
+
+* Encoding / compression tasks can be handled by web worker threads which doesn't interfere with the main (aka user interface) thread.
+
+#### Rise of SPA's
+
+* Great websites use good frameworks. These frameworks like React/Vue allows us to navigate web apps without refreshing the page. Not refreshing the page means existing WebRTC connections won't come to waste and can be maximized to full utility.
+
+#### Smarter Web API's
+
+* We can detect pretty much everything nowadays, ie. if you're running on a battery (laptop / mobile), or if you're running in a good WebRTC-worthy connection (4g & up). Basice device information like these allows us to create better (or more appropriately, smarter) modules.
 
 ## Glossary / Terms
 
