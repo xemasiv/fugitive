@@ -147,59 +147,6 @@ class FugitiveClient {
         }
       }
       return;
-      /*
-      let { action, url, content } = msgpack.decode(data);
-      let handler;
-      log(action, url, content);
-      switch (action) {
-        case 'request':
-          if (lru.has(url) === true) {
-            content = lru.get(url);
-            log('found', url, content);
-            log(chunk(content, 16 * 1024));
-            rtc.send(
-              msgpack.encode({
-                action: 'resolving', url
-              })
-            );
-          } else {
-            log('not found', url);
-            rtc.send(
-              msgpack.encode({
-                action: 'not_found', url
-              })
-            );
-          }
-          break;
-        case 'not_found':
-          break;
-        case 'resolving':
-
-          break;
-        case 'resolve':
-          if (content) {
-            log('content:', content);
-            if (content && handlers.has(url) === true) {
-              handler = handlers.get(url);
-              handler.abort();
-              log('compressed:', content.byteLength);
-              log('decompressed:', pako.inflate(content).byteLength);
-              content = new Blob(
-                [pako.inflate(content)],
-                { type: handler.type }
-              );
-              log('content:', content);
-              content = URL.createObjectURL(content);
-              log('content:', content);
-              handler.resolve(content);
-            }
-            if (handlers.has(url) === true) {
-              handlers.delete(url);
-            }
-          }
-          break;
-      } */
-
     };
     ws.onmessage = ({ data: m }) => {
       const { status, offer, answer } = msgpack.decode(m);
