@@ -59,14 +59,14 @@ This is our drop-in replacement for `fetch`. We are using `yetch` from Netflix s
 
 These are client instances of other end users..
 
-1. Which have existing
+1. Which have existing WebRTC connections with you
 
 #### Tier-2 Peers
 
 These are client instances of other end users..
 
 1. Which are not connected to you
-2. But connected to your Tier-1 Peers
+2. But has existing WebRTC connections with your Tier-1 Peers
 
 ---
 
