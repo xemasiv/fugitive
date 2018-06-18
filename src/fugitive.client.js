@@ -26,7 +26,7 @@ class FugitiveClient {
   constructor () {
     const self = this;
 
-    const lru = new QuickLRU({maxSize: 100});
+    const lru = new QuickLRU({ maxSize: 100 });
 
     self.lru = lru;
 
