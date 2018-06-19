@@ -39,27 +39,11 @@ That's pretty much it: encoding, compression & cache **plus** WebRTC, all to opt
 
 #### Smarter Web API's
 
-* We can detect pretty much everything nowadays, ie. if you're running on a battery (laptop / mobile), or if you're running in a good WebRTC-worthy connection (4g & up). Basice device information like these allows us to create better (or more appropriately, smarter) modules.
+* We can detect pretty much everything nowadays, ie. if you're running on a battery (laptop / mobile), or if you're running in a good WebRTC-worthy connection (4g & up). Basic device information like these allows us to create better (or more appropriately, smarter) modules.
 
 #### tl;dr
 
 * This is it man, welcome to the future.
-
-## How It Should Look Like
-
-We got two users of our website. Alice and Bob.
-
-Alice visits our website first where she then curiously navigates to our `/cats` page.
-
-We have a picture there: `cat.jpg` which is fetched from our `CDN`. Now - behind the scenes - since our website happens to use this library's `fetch` wrapper, this `cat.jpg`'s `blob` has been automatically converted into a `Uint8array` and compressed with `pako`'s zlib implementation at `{ level: 9, memLevel: 9}` option, and just kept stand-by.
-
-Now here come's Bob. I don't know what's lovely with cats these days but Bob also navigates to our `/cats` page! Wait, looks like Bob has established a WebRTC connection with Alice since visiting our homepage - and as it looks like Alice already got `cat.jpg` and is sending it right now to Bob!
-
-Holy figgetty fudge!! Turns out Bob just lives in the same city as Alice and Bob just loaded `cat.jpg` from her within `50ms`! Much much faster compared to the `150ms` it took for Alice to fetch it from our CDN!
-
-And hory forging sh8 m8 Bob just sent his brother Charlie downstairs a link to this `cat.jpg` pic, and since they're on the same network, Charlie just loaded it within a mind-blowing jaw-dropping eye-staggering `20ms`.
-
-The end!
 
 ## Glossary / Terms
 
@@ -160,7 +144,12 @@ These are client instances of other end users..
 
 ## License
 
-Copyright 2018 Joshua Samonte
+![mit](/i/license.png)
+
+
+(Art by excaliburzero@deviantart, CC-BY-3.0)
+
+Copyright © 2018 Isaiah Joshua M. Samonte
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
