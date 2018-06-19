@@ -39,3 +39,9 @@ Sample Response `headers`:
 * `bytes=0-0,-1` - first and last byte
 
 @ https://www.keycdn.com/support/byte-range-requests/
+
+---
+
+Why `sha224`
+
+* https://news.ycombinator.com/item?id=14455516
