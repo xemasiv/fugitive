@@ -35,3 +35,7 @@ Sample Response `headers`:
 * `bytes=0-100` - 0 to 100
 * `bytes=0--1` - 0 to end
 * `bytes=100--1` - 100 to end
+* `bytes=-500` - last 500 bytes
+* `bytes=0-0,-1` - first and last byte
+
+@ https://www.keycdn.com/support/byte-range-requests/
