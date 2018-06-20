@@ -50,7 +50,7 @@ WebRTCClient        -->   WebRTCClient
 ```
 
 * [1] - Whenever a user does something, ie. navigates a page, or makes a search query, at times the server has to include links to specific resources.
-  * For example, a user of a real-estate web app might query for `apartments` in `Chicago`, and generally our servers just return the list of results, inclusive of links to images.
+  * For example, a user of a real-estate web app might query for `apartments` in `Chicago`, our servers just return the list of results inclusive with links to images.
 * [2] - Ideally, the server already has a pre-hashed these resources and will just include these hashes on the fly on each and every resource request.
 
 ###### Figure 3: An array of search results with image links
