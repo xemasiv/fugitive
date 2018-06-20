@@ -33,11 +33,11 @@ WebRTCClient        -->   WebRTCClient
 
 * This project pretty much revolves around solutions with trade-offs. Point being, we try to tweak and bend the trade-offs as much as we can to further deliver a better user experience - specifically, a faster loading of resources.
 
-#### Solution # 1: Verify peer-provided resource with server-provided hash
+#### Solution # 1: Verify peer-provided resources with server-provided hashes
 
 * To quote Bitcoin's Satoshi Nakamoto, "What is needed is a.. ..system based on cryptographic proof instead of trust,.."
 * Our clients should not trust resources provided by our peers on face value. Just because peer `Alice` claims she has `xyz.jpg`, it doesn't mean the file she sent is the actual file we were expecting. This leads us to requiring ourselves to verify the things we receive with our server.
-* Ideally, we can easily do this by including the `hash` of every referenced resource we receive from our server, and just using this `hash` to verify such authenticity when such resources are loaded from our peers.
+* We can easily do this by including the `hash` of every referenced resource we receive from our server, and just using this `hash` to verify such authenticity when such resources are loaded from our peers.
 
 ###### Figure 2: Hash inclusion on server-provided resource links
 
@@ -51,6 +51,7 @@ WebRTCClient        -->   WebRTCClient
 
 * [1] - Whenever a user does something, ie. navigates a page, or makes a search query, at times the server has to include links to specific resources.
   * For example, a user of a real-estate web app might query for `apartments` in `Chicago`, and generally our servers just return the list of results, inclusive of links to images.
+* [2] - Ideally, the server already has a pre-hashed these resources and will just include these hashes on the fly on each and every resource request.
 
 ###### Figure 3: An array of search results with image links
 
@@ -68,8 +69,6 @@ WebRTCClient        -->   WebRTCClient
     }
   ]
 ```
-
-* [2] - Ideally, the server already has a pre-hashed these resources and will just include these hashes on the fly on each and every resource request.
 
 ###### Figure 4: A result with inclusive image hash
 
