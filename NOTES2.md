@@ -40,10 +40,6 @@ Sample Response `headers`:
 
 @ https://www.keycdn.com/support/byte-range-requests/
 
-## Why `sha224`
-
-* https://news.ycombinator.com/item?id=14455516
-
 ## Research Notes & References
 
 * https://www.html5rocks.com/en/tutorials/webrtc/datachannels/
@@ -52,59 +48,6 @@ Sample Response `headers`:
 * https://news.ycombinator.com/item?id=5452780
   * highlights security & privacy issues we might encounter
 * http://zguide.zeromq.org/php:chapter8
-
-## Architecture
-
-#### Peer Discovery
-
-###### Figure 1: Basic connections
-
-```
------------------ SERVER -----------------
-WebSocketServer
-------------------------------------------
-^                         ^  
-| |                       | |
-  v                         v
---- CLIENT A ---          --- CLIENT B ---
-WebSocketClient           WebSocketClient
-
-WebRTCClient        -->   WebRTCClient
-                    <--
-----------------          ---------------
-```
-
-* `WebSocketServer`
-  * A `uws` or `ws` instance
-* `WebSocketClient`
-  * A native `WebSocket` instance
-* `WebRTCClient`
-  * A `simple-peer` instance
-* `WebSocketServer` & `WebSocketClient` are required in order for clients to establish WebRTC connections with each other. Here, the server takes the role of pairing clients, and forwarding of `offer` & `answer` signals between each paired clients.
-
-#### Content Discovery
-
-###### Figure 2: Hash inclusion on server-provided links
-
-```
------ SERVER -----
-^ [1]
-|           |
-            v [2]
------ CLIENT -----
-```
-
-* [1] - asdasd
-
-```
-{
-  url: 'wikipedia.org/muhammad_ali.png',
-  hash: 'a6212a3522dbd7bb3c1203c67f6c4c8776267329c4c73465013f4e2c'
-}
-```
-
-#### Latency vs Bandwidth
-
 
 
 
