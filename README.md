@@ -135,13 +135,6 @@ These are client instances of other end users..
 
 ---
 
-## References
-
-* https://www.html5rocks.com/en/tutorials/webrtc/datachannels/
-* https://stackoverflow.com/a/35381583
-* https://stackoverflow.com/a/43433129
-* https://news.ycombinator.com/item?id=5452780 (lol for real)
-
 ## License
 
 ![mit](/i/license.png)
