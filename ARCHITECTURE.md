@@ -88,12 +88,33 @@ WebRTCClient        -->   WebRTCClient
 * The `hash` function should be fast, compact and secure.
 * A slow hash function creates latency overhead, a non-compact hash creates bandwidth consumption overhead, and generally an insecure hash will absolutely scare away developers and end-users.
 * The `sha224` function from `js-sha256` library is selected for now since albeit not being a cryptography expert myself, a decent research I've done shows that it's reliable enough - and if you've got better, convincing suggestions on alternatives I'm really open for it.
-* https://latacora.singles/2018/04/03/cryptographic-right-answers.html
-* https://crypto.stackexchange.com/a/15155
+  * https://latacora.singles/2018/04/03/cryptographic-right-answers.html
+  * https://crypto.stackexchange.com/a/15155
 
 ## Optimizing Peer Discovery
 
 #### Solution # 2: Pair clients with nearby clients
 
 * Since the server does the pairing of clients, the server can further optimize by figuring out which potential peers are nearby a client, and just pairing them both.
-* We can do this in our server by using the client IP Addresses to figure their approximate locations and applying basic arithmetic to figure out the best matches.
+* We can do this in our server by using the client `IP Addresses` to figure their approximate locations and applying basic arithmetic to figure out the best matches.
+* Accuracy can also be further improved by using the `Geolocation API`
+  * https://caniuse.com/#feat=geolocation
+
+## Potential Risks
+
+* (still thinking about this, open for discussion)
+* Browser Compatibility Issues
+* Privacy Issues
+
+
+
+
+
+
+
+
+
+
+
+
+//
