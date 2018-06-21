@@ -5,7 +5,7 @@ Self-orchestrating p2p delivery network using WebRTC
 
 My goal here is to create an open-source approach in maximizing the current availability of WebRTC into optimizing our existing network architectures.
 
-The gist is, Cloud Delivery Networks (CDN's) are indeed available and affordable right now - but that's the server-side of things being optimized. This project aims to address the client-side of things where we can leverage the prominent rise of WebRTC with other existing technologies, e.g. encoding, compression & cache's.
+The gist is, Content Delivery Networks (CDN's) are indeed available and affordable right now - but that's the server-side of things being optimized. This project aims to address the client-side of things where we can leverage the prominent rise of WebRTC with other existing technologies, e.g. encoding, compression & cache's.
 
 That's pretty much it: encoding, compression & cache **plus** WebRTC, all to optimize the way we receive images, videos, etc.
 
