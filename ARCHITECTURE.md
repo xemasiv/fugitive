@@ -97,7 +97,15 @@ WebRTCClient        -->   WebRTCClient
 
 * Since the server does the pairing of clients, the server can further optimize by figuring out which potential peers are nearby a client, and just pairing them both.
 * We can do this in our server by using the client `IP Addresses` to figure their approximate locations and applying basic arithmetic to figure out the best matches.
-* Accuracy can also be further improved by using the `Geolocation API`
+
+#### Using Third-Party IP Geolocation Data
+
+* Accuracy can be improved by utilizing raw `IP-CITY-LAT-LONG` datasets. The gist is using our end-users' IP Addresses, we can lookup their city across these datasets, where we can either match users living within the same cities, or furthermore find a potential peer whose city is closer to another user in another city.
+* `IP-ASN` datasets can also be used to match users with the same Internet Service Provider (`ISP`).
+
+#### Browser-provided Geolocation API
+
+* Accuracy can also be further improved with the help of the end-users by using the `Geolocation API`
   * https://caniuse.com/#feat=geolocation
 
 ## Potential Risks
