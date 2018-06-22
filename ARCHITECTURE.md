@@ -194,6 +194,9 @@ Peers currently transferring resources may lose their connection
 
 https://blog.dshr.org/2014/10/economies-of-scale-in-peer-to-peer.html
 
+Trading Performance for Latency
+
+https://blog.dshr.org/2018/02/do-you-need-blockchain.html
 
 
 
