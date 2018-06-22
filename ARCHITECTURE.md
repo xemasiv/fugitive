@@ -184,6 +184,40 @@ Peers currently transferring resources may lose their connection
 
 ---
 
+# Resource Storage Persistence
+
+---
+
+#### PROBLEM:
+
+We need to persist data.
+
+#### SOLUTION:
+
+Use a custom build of `PouchDB`.
+
+Their `pouchdb-browser` is still quite bulky, but according to their docs, we can go as far as importing only the modules that we need in order to reduce bundle size.
+
+* https://pouchdb.com/custom.html
+
+```js
+// THIS:
+var PouchDB = require('pouchdb-browser');
+
+// IS EQUAL TO THIS:
+var PouchDB = require('pouchdb-core')
+  .plugin(require('pouchdb-adapter-idb'))
+  .plugin(require('pouchdb-adapter-http'))
+  .plugin(require('pouchdb-mapreduce'))
+  .plugin(require('pouchdb-replication'));
+
+// WHICH CAN BE REDUCED TO:
+var PouchDB = require('pouchdb-core')
+  .plugin(require('pouchdb-adapter-idb'));
+```
+
+---
+
 ## Potential Risks
 
 * (still thinking about this, open for discussion)
