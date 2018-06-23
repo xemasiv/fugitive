@@ -202,6 +202,7 @@ The following tasks can be assigned to worker threads:
 * Encoding w/ `msgpack` or `pbf`
 * Compression w/ `pako`
 * IndexedDB access w/ `pouchdb`
+* Hashing w/ `js-sha256`
 
 We can further reduce latency by using `Transferrale Objects`
 
@@ -224,6 +225,8 @@ Using `navigator.hardwareConcurrency` we can get the number of cores in a single
 
 * https://caniuse.com/#feat=hardwareconcurrency
 * https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency
+
+On top of it, using promises and fast queues like `train` enables us to efficiently work with multiple worker threads.
 
 ---
 
