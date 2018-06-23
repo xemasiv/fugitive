@@ -184,6 +184,34 @@ Peers currently transferring resources may lose their connection
 
 ---
 
+# Resource Management
+
+---
+
+#### PROBLEM:
+
+We need to reduce work in main thread.
+
+#### SOLUTION:
+
+Use Web Workers.
+
+The following tasks can be assigned to worker threads:
+
+* WebSocket client
+* Encoding w/ `msgpack` or `pbf`
+* Compression w/ `pako`
+* IndexedDB access w/ `pouchdb`
+
+We can further reduce latency by using `Transferrale Objects`
+
+* https://stackoverflow.com/a/42864952
+* https://developers.google.com/web/updates/2011/12/Transferable-Objects-Lightning-Fast
+* https://developer.mozilla.org/en-US/docs/Web/API/Transferable
+* https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage
+
+---
+
 # Resource Storage Persistence
 
 ---
