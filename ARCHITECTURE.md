@@ -212,6 +212,21 @@ We can further reduce latency by using `Transferrale Objects`
 
 ---
 
+#### PROBLEM:
+
+We can't just rely on one (1) worker thread.
+
+#### SOLUTION:
+
+We spawn multiple worker threads.
+
+Using `navigator.hardwareConcurrency` we can get the number of cores in a single device. The example provided in MDN allows us to instantiate multiple workers on-par with the core-amount we receive in `hardwareConcurrency`.
+
+* https://caniuse.com/#feat=hardwareconcurrency
+* https://developer.mozilla.org/en-US/docs/Web/API/NavigatorConcurrentHardware/hardwareConcurrency
+
+---
+
 # Resource Storage Persistence
 
 ---
